@@ -1,0 +1,4 @@
+[packages]
+pytest = "*"
+nats-py = "*"
+pytest-asyncio = "*"
