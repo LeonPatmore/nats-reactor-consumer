@@ -1,9 +1,38 @@
 version: "3"
 
 services:
+  nats_exporter:
+    image: natsio/prometheus-nats-exporter:latest
+    ports:
+      - "7777:7777"
+    command: "-connz -varz -channelz -serverz -subz -jsz all http://nats:8222"
+    networks:
+      - nats_net
   nats:
     image: nats:latest
     ports:
       - "4222:4222"
+      - "8222:8222"
     entrypoint: /nats-server
-    command: ["--name", "N1", "--js"]
+    command: ["--name", "N1", "--js", "-m", "8222"]
+    networks:
+      - nats_net
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    networks:
+      - nats_net
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - nats_net
+
+networks:
+  nats_net:
