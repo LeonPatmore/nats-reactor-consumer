@@ -33,6 +33,14 @@ services:
       - "3000:3000"
     networks:
       - nats_net
+  json_server:
+    image: leonpatmore2/json-server:latest
+    ports:
+      - "3010:3000"
+    networks:
+      - nats_net
+    volumes:
+      - ./json-server-config.json:/app/db.json
 
 networks:
   nats_net:
