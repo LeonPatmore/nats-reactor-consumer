@@ -28,3 +28,13 @@ async def test_simple(nats_client: nats.NATS, setup_nats_stream):
     logging.info(f"Generating a new ID {my_id}")
     pub_ack = await nats_client.jetstream().publish("nats.test", headers={"id": my_id}, payload="cool".encode())
     logging.info("Pub ack is " + json.dumps(pub_ack.as_dict()))
+
+
+@pytest.mark.asyncio
+async def test_error(nats_client: nats.NATS, setup_nats_stream):
+    my_id = str(uuid.uuid4())
+    logging.info(f"Generating a new ID {my_id}")
+    pub_ack = await nats_client.jetstream().publish("nats.test", headers={"id": my_id,
+                                                                          "error": "true"}, payload="cool".encode())
+    logging.info("Pub ack is " + json.dumps(pub_ack.as_dict()))
+

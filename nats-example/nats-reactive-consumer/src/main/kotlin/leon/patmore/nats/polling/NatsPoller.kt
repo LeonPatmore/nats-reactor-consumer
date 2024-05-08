@@ -6,6 +6,7 @@ import leon.patmore.nats.NatsSink
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.core.scheduler.Schedulers
 import reactor.kotlin.core.publisher.toFlux
 import java.time.Duration
 
@@ -19,12 +20,15 @@ class NatsPoller(private val sink: NatsSink,
     fun poll(): Flux<Void> {
         return Mono.fromCallable {
             return@fromCallable jetStreamSubscription.fetch(10, Duration.ofMillis(500))
-        }.flatMapMany { it.toFlux() }.doOnNext {
-            logger.info { "Emitting message" }
-            sink.tryEmitNext(it)
-        }.doOnError {
-            logger.warn(it) { "Failed to emit message" }
         }
+            .subscribeOn(Schedulers.boundedElastic())
+            .flatMapMany { it.toFlux() }
+            .doOnNext {
+                logger.info { "Emitting message" }
+                sink.tryEmitNext(it)
+            }.doOnError {
+                logger.warn(it) { "Failed to emit message" }
+            }
             .then()
             .repeat()
     }

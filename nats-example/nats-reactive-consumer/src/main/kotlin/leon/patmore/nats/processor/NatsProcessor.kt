@@ -7,6 +7,8 @@ import leon.patmore.nats.ack.NatsAcker
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.core.scheduler.Schedulers
+import reactor.kotlin.core.publisher.toMono
 
 @Service
 class NatsProcessor(private val natsSink: NatsSink,
@@ -17,13 +19,15 @@ class NatsProcessor(private val natsSink: NatsSink,
 
     fun process() : Flux<Void> {
         return natsSink.asFlux()
-            .doOnNext { logger.info { "Processing message" } }
+            .publishOn(Schedulers.parallel())
+            .doOnNext { logger.info { "Processing message ${it.metaData()}" } }
             .flatMap { msg -> messageProcessor.process(msg)
                 .flatMap { natsAcker.ack(msg) }
                 .switchIfEmpty(natsAcker.ack(msg))
-            }
-            .doOnError {
-                logger.warn { "Failed to process message!" }
+                .onErrorResume { err ->
+                    logger.warn(err) { "Failed to process message, will not ack!" }
+                    "".toMono().then()
+                }
             }
     }
 

@@ -5,6 +5,8 @@ import io.nats.client.JetStreamSubscription
 import io.nats.client.Nats
 import io.nats.client.PullSubscribeOptions
 import io.nats.client.api.ConsumerConfiguration
+import leon.patmore.nats.polling.NatsPoller
+import leon.patmore.nats.processor.NatsProcessor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import reactor.core.publisher.Sinks
@@ -29,5 +31,9 @@ class NetsConfiguration {
     fun natsJetStreamSubscription(natsConnection: Connection,
                                   pullSubscribeOptions: PullSubscribeOptions): JetStreamSubscription =
         natsConnection.jetStream().subscribe("nats.test", pullSubscribeOptions)
+
+    @Bean
+    fun natsSubscription(natsPoller: NatsPoller, natsProcessor: NatsProcessor) =
+        NatsSubscription(natsPoller, natsProcessor)
 
 }

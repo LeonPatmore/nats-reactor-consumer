@@ -5,10 +5,8 @@ import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
 import leon.patmore.nats.polling.NatsPoller
 import leon.patmore.nats.processor.NatsProcessor
-import org.springframework.stereotype.Service
 import reactor.core.Disposable
 
-@Service
 class NatsSubscription(
     private val natsPoller: NatsPoller,
     private val natsProcessor: NatsProcessor
@@ -22,9 +20,11 @@ class NatsSubscription(
 
     @PostConstruct
     fun subscribe() {
+        if (running) return
         running = true
         processorDisposable = natsProcessor.process().subscribe()
         pollerDisposable = natsPoller.poll().subscribe()
+        logger.info { "Subscribe finished!" }
     }
 
     @PreDestroy

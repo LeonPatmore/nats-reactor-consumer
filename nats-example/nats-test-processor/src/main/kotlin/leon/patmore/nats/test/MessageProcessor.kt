@@ -17,16 +17,25 @@ class MessageProcessor(private val webClient: WebClient) : NatsMessageProcessor 
     override fun process(msg: Message): Mono<Void> {
         return Mono.fromCallable {
             return@fromCallable msg.headers?.get("id")?.first()
-        }.flatMap {
-            logger.info { "Sending ID $it" }
-            webClient.post()
-                .bodyValue(Message(it!!))
-                .retrieve()
-                .toBodilessEntity()
-                .then()
-        }.onErrorResume(WebClientResponseException::class.java) {
-            return@onErrorResume "".toMono().then()
         }
+            .flatMap {
+                val shouldError = msg.headers?.get("error")?.isNotEmpty() ?: false
+                if (shouldError) {
+                    Mono.error(RuntimeException("asd"))
+                } else {
+                    it.toMono()
+                }
+            }
+            .flatMap {
+                logger.info { "Sending ID $it" }
+                webClient.post()
+                    .bodyValue(Message(it!!))
+                    .retrieve()
+                    .toBodilessEntity()
+                    .then()
+            }.onErrorResume(WebClientResponseException::class.java) {
+                return@onErrorResume "".toMono().then()
+            }
     }
 
 }
