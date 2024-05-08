@@ -1,5 +1,6 @@
 import json
 import logging
+import uuid
 
 import nats
 import pytest
@@ -23,5 +24,7 @@ async def setup_nats_stream(nats_client):
 
 @pytest.mark.asyncio
 async def test_simple(nats_client: nats.NATS, setup_nats_stream):
-    pub_ack = await nats_client.jetstream().publish("nats.test")
+    my_id = str(uuid.uuid4())
+    logging.info(f"Generating a new ID {my_id}")
+    pub_ack = await nats_client.jetstream().publish("nats.test", headers={"id": my_id}, payload="cool".encode())
     logging.info("Pub ack is " + json.dumps(pub_ack.as_dict()))

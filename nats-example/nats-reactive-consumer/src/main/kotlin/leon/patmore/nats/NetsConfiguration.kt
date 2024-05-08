@@ -14,7 +14,7 @@ import java.time.Duration
 class NetsConfiguration {
 
     @Bean
-    fun natsSink(): NatsSink = Sinks.many().unicast().onBackpressureBuffer()
+    fun natsSink(): NatsSink = Sinks.many().multicast().onBackpressureBuffer()
 
     @Bean
     fun natsConnection(): Connection = Nats.connect()

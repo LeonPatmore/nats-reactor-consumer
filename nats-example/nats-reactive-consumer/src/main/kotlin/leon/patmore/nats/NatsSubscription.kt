@@ -23,8 +23,8 @@ class NatsSubscription(
     @PostConstruct
     fun subscribe() {
         running = true
-        pollerDisposable = natsPoller.poll { running }.subscribe()
         processorDisposable = natsProcessor.process().subscribe()
+        pollerDisposable = natsPoller.poll().subscribe()
     }
 
     @PreDestroy

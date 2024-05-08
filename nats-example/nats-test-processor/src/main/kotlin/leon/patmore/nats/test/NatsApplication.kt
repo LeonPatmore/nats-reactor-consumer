@@ -1,4 +1,4 @@
-package leon.patmore.nats
+package leon.patmore.nats.test
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

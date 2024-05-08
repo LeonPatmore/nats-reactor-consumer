@@ -8,7 +8,6 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.toFlux
 import java.time.Duration
-import java.util.function.BooleanSupplier
 
 
 @Service
@@ -17,16 +16,17 @@ class NatsPoller(private val sink: NatsSink,
 
     private val logger = KotlinLogging.logger {}
 
-    fun poll(running: BooleanSupplier): Flux<Void> {
+    fun poll(): Flux<Void> {
         return Mono.fromCallable {
-            jetStreamSubscription.fetch(10, Duration.ofMillis(500))
-                .also { if (it.size > 0) {
-                    logger.info { "Found ${it.size} messages" }
-                } }
-                .toFlux()
-                .doOnNext { sink.tryEmitNext(it) } }
+            return@fromCallable jetStreamSubscription.fetch(10, Duration.ofMillis(500))
+        }.flatMapMany { it.toFlux() }.doOnNext {
+            logger.info { "Emitting message" }
+            sink.tryEmitNext(it)
+        }.doOnError {
+            logger.warn(it) { "Failed to emit message" }
+        }
             .then()
-            .repeat(running)
+            .repeat()
     }
 
 }
