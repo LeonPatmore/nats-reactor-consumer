@@ -2,3 +2,4 @@
 pytest = "*"
 nats-py = "*"
 pytest-asyncio = "*"
+requests = "*"
