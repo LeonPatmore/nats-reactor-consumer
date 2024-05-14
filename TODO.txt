@@ -1,0 +1,2 @@
+- 14/05/2024: Add CI.
+- 14/05/2024: Adding grafana dashboard config to docker compose.
