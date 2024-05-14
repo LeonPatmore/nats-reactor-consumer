@@ -23,8 +23,11 @@ class NetsConfiguration {
 
     @Bean
     fun pullSubscribeOptions(): PullSubscribeOptions = PullSubscribeOptions.Builder()
-            .durable("fetch-durable-not-required")
-            .configuration(ConsumerConfiguration.Builder().ackWait(Duration.ofSeconds(5)).build())
+            .durable("consumer-name")
+            .configuration(ConsumerConfiguration.Builder()
+                .ackWait(Duration.ofSeconds(3))
+                .maxDeliver(2L)
+                .build())
             .build()
 
     @Bean
