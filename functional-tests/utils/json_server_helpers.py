@@ -7,6 +7,9 @@ class ResourceNotFound(Exception):
         self.domain = domain
         self._id = _id
 
+    def __str__(self):
+        return f"Could not find resource under domain {self.domain} with ID {self._id}"
+
 
 class JsonServer:
 
