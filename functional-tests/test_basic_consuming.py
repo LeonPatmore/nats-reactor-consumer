@@ -10,6 +10,7 @@ from nats.js.api import StreamConfig, StorageType
 
 from utils.json_server_helpers import JsonServer
 from utils.nats_consumer import NatsConsumer
+from utils.nats_processor_instance import LocalProcessInstance
 from utils.wait_for import wait_for
 
 
@@ -30,14 +31,12 @@ async def setup_nats_stream(nats_client):
     logging.info("Stream info is " + json.dumps(stream_info.as_dict()))
 
 
-async def teasdsad(js):
-    sub = await js.subscribe("$JS.EVENT.ADVISORY.CONSUMER.MAX_DELIVERIES.test-stream.*", durable="myapp")
-    logging.info("hellooo")
-    while True:
-        logging.info("Waiting for message")
-        msg = await sub.next_msg(timeout=30000)
-        logging.info("msg is " + str(msg))
-        await msg.ack()
+@pytest_asyncio.fixture
+async def start_processor(setup_nats_stream):
+    processor = LocalProcessInstance()
+    processor.start()
+    yield processor
+    processor.stop()
 
 
 @pytest_asyncio.fixture
@@ -62,7 +61,7 @@ def json_server() -> JsonServer:
 
 
 @pytest.mark.asyncio
-async def test_simple_message_is_processed(nats_client, setup_nats_stream, json_server: JsonServer):
+async def test_simple_message_is_processed(nats_client, start_processor, json_server: JsonServer):
     _, js = nats_client
     my_id = str(uuid.uuid4())
     logging.info(f"Generating a new ID {my_id}")
