@@ -22,8 +22,13 @@ class NatsSubscription(
     fun subscribe() {
         if (running) return
         running = true
-        processorDisposable = natsProcessor.process().subscribe()
-        pollerDisposable = natsPoller.poll().subscribe()
+        processorDisposable = natsProcessor
+            .process()
+            .doOnError { logger.error(it) { "Processor failed" } }
+            .subscribe()
+        pollerDisposable = natsPoller.poll()
+            .doOnError { logger.error(it) { "Poller failed" } }
+            .subscribe()
         logger.info { "Subscribe finished!" }
     }
 

@@ -38,8 +38,8 @@ class LocalProcessInstance(ServiceInstance):
 
     @staticmethod
     def _get_cmd() -> str:
-        return f"{os.path.join(os.pardir, 'nats-example', 'gradlew')} "\
-               f"-p {os.path.join(os.pardir, 'nats-example')} "\
+        return f"{os.path.join(os.pardir, 'nats-reactor-consumer', 'gradlew')} "\
+               f"-p {os.path.join(os.pardir, 'nats-reactor-consumer')} "\
                f"-Dorg.gradle.java.home={JAVA_HOME} "\
                f"nats-test-processor:bootRun"
 

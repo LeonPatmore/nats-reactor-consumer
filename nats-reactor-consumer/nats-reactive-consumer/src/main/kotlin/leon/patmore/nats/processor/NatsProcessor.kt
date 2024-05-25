@@ -13,7 +13,8 @@ import reactor.kotlin.core.publisher.toMono
 @Service
 class NatsProcessor(private val natsSink: NatsSink,
                     private val messageProcessor: NatsMessageProcessor,
-                    private val natsAcker: NatsAcker) {
+                    private val natsAcker: NatsAcker,
+                    private val nackDelayProvider: NackDelayProvider) {
 
     private val logger = KotlinLogging.logger {}
 
@@ -25,7 +26,8 @@ class NatsProcessor(private val natsSink: NatsSink,
                 .flatMap { natsAcker.ack(msg) }
                 .switchIfEmpty(natsAcker.ack(msg))
                 .onErrorResume { err ->
-                    logger.warn(err) { "Failed to process message, will not ack!" }
+                    logger.warn(err) { "Failed to process message, nacking!" }
+                    msg.nakWithDelay(nackDelayProvider.get(msg))
                     "".toMono().then()
                 }
             }
