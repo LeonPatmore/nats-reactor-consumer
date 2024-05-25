@@ -74,7 +74,10 @@ async def test_simple_message_is_processed(nats_client, start_processor, json_se
 
 
 @pytest.mark.asyncio
-async def test_message_that_errors_goes_to_dlq(nats_client, setup_nats_stream, setup_nats_stream_dlq: NatsConsumer):
+async def test_message_that_errors_goes_to_dlq(nats_client,
+                                               start_processor,
+                                               setup_nats_stream,
+                                               setup_nats_stream_dlq: NatsConsumer):
     _, js = nats_client
     my_id = str(uuid.uuid4())
     logging.info(f"Generating a new ID {my_id}")

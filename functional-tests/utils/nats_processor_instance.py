@@ -1,9 +1,11 @@
 import logging
 import os
 import threading
-from time import sleep
 
 from utils.commands import run
+from utils.config import settings
+
+JAVA_HOME = settings.JAVA_HOME
 
 
 class ServiceInstance(object):
@@ -38,7 +40,7 @@ class LocalProcessInstance(ServiceInstance):
     def _get_cmd() -> str:
         return f"{os.path.join(os.pardir, 'nats-example', 'gradlew')} "\
                f"-p {os.path.join(os.pardir, 'nats-example')} "\
-               f"-Dorg.gradle.java.home=C:\\Users\\Leon\\.jdks\\corretto-21.0.3 "\
+               f"-Dorg.gradle.java.home={JAVA_HOME} "\
                f"nats-test-processor:bootRun"
 
     def start(self):
@@ -50,8 +52,3 @@ class LocalProcessInstance(ServiceInstance):
         logging.info("Stopping processor")
         self.thread.stop()
         self.thread.join()
-
-
-if __name__ == '__main__':
-    LocalProcessInstance().start()
-    sleep(9999)
