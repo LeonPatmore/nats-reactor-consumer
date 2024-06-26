@@ -1,5 +1,6 @@
 package leon.patmore.nats
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.nats.client.Connection
 import io.nats.client.JetStreamSubscription
 import io.nats.client.Nats
@@ -10,19 +11,24 @@ import leon.patmore.nats.polling.NatsPoller
 import leon.patmore.nats.processor.NackDelayFromBackoffs
 import leon.patmore.nats.processor.NatsProcessor
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import reactor.core.publisher.Sinks
 import java.time.Duration
 
+private val logger = KotlinLogging.logger {}
+
 @Configuration
+@EnableConfigurationProperties(NatsProperties::class)
 class NetsConfiguration {
 
     @Bean
     fun natsSink(): NatsSink = Sinks.many().multicast().onBackpressureBuffer()
 
     @Bean
-    fun natsConnection(): Connection = Nats.connect()
+    fun natsConnection(properties: NatsProperties): Connection =
+        Nats.connect("nats://localhost:${properties.port}").also { logger.info { properties } }
 
     @Bean
     @ConditionalOnMissingBean
