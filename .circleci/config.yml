@@ -15,7 +15,9 @@ jobs:
                 command: ./gradlew test
                 name: Run Tests
                 working_directory: nats-reactor-consumer
-      - gradle/collect_test_results
+      - gradle/collect_test_results:
+          reports_path: nats-reactor-consumer/nats-reactive-consumer/build/reports
+          test_results_path: nats-reactor-consumer/nats-reactive-consumer/build/test-results
 workflows:
   checkout-build-test:
     jobs:
