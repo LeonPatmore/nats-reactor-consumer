@@ -5,7 +5,7 @@ jobs:
   make-gradle-executable:
     executor:
       name: gradle/default
-      tag: "17.0"
+      tag: "21.0"
     steps:
       - checkout
       - run: chmod +x nats-reactor-consumer/gradlew
