@@ -10,6 +10,7 @@ ENV DYNACONF_JAVA_HOME="/usr/lib/jvm/java-21-amazon-corretto"
 
 WORKDIR /app/nats-reactor-consumer
 COPY ./nats-reactor-consumer .
+RUN chmod +x gradlew
 RUN ./gradlew init
 RUN ./gradlew build -x test
 

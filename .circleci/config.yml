@@ -23,7 +23,15 @@ jobs:
       - gradle/collect_test_results:
           reports_path: nats-reactor-consumer/nats-reactive-consumer/build/reports
           test_results_path: nats-reactor-consumer/nats-reactive-consumer/build/test-results
+  functional-tests:
+    executor: machine_executor_amd64
+    steps:
+      - checkout
+      - run: cd deployments/local && make start
+      - run: cd functional-tests && make build
+      - run: cd functional-tests && make run
 workflows:
   checkout-build-test:
     jobs:
       - unit-tests
+      - functional-tests

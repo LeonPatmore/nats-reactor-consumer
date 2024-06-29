@@ -3,7 +3,7 @@ lock:
 	pipenv install
 
 build:
-	cd .. && docker build -t functional-tests -f .\functional-tests\Dockerfile .
+	cd .. && docker build -t functional-tests -f ./functional-tests/Dockerfile .
 
 run:
 	docker run --network local_nats_net --rm functional-tests
