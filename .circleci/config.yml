@@ -4,6 +4,7 @@ orbs:
 jobs:
   make-gradle-executable:
     executor: gradle/default
+      tag: 17.0
     steps:
       - checkout
       - run: chmod +x nats-reactor-consumer/gradlew
