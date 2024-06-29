@@ -34,3 +34,4 @@ workflows:
   checkout-build-test:
     jobs:
       - unit-tests
+      - functional-tests
