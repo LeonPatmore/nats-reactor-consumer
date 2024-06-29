@@ -1,4 +1,5 @@
 import asyncio
+import inspect
 import logging
 from datetime import timedelta, datetime
 
@@ -8,7 +9,10 @@ async def wait_for(func: callable, max_time: timedelta = timedelta(seconds=30), 
     previous_error = None
     while datetime.now() - start_time < max_time:
         try:
-            func()
+            if inspect.iscoroutinefunction(func):
+                await func()
+            else:
+                func()
             return None
         except Exception as e:
             logging.info("Failed to wait due to " + str(e))

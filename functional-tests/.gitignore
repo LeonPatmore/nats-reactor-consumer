@@ -1,6 +1,6 @@
 .pytest_cache
 __pycache__
 **/*.pyc
-stderr.txt
-stdout.txt
+stderr*.txt
+stdout*.txt
 settings.yaml

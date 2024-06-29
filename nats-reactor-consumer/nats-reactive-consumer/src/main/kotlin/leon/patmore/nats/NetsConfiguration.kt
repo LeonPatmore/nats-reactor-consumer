@@ -41,8 +41,8 @@ class NetsConfiguration {
             .durable("consumer-name")
             .configuration(ConsumerConfiguration.Builder()
                 .ackPolicy(AckPolicy.Explicit) // This is important otherwise acking doesn't work, even though this is a default setting according to the docs.
-                .ackWait(Duration.ofSeconds(3))
-//                .backoff(*backOffPolicy.toTypedArray())
+                .ackWait(Duration.ofSeconds(5))
+//                .backoff(*backOffPolicy.toTypedArray()) TODO: Fix this.
                 .maxDeliver(backOffPolicy.size.toLong() + 1L)
                 .build())
             .build()
