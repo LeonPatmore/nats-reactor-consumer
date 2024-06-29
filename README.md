@@ -1,5 +1,10 @@
 # NATS Reactor Consumer
 
+A reactor library for consuming from NATS.
+
+- [Consumer Client](nats-reactor-consumer/nats-reactive-consumer): A generic consuming client.
+- [Test Consumer](nats-reactor-consumer/nats-test-processor): An example of a SpringBoot service using the client. Used for functional tests.
+
 ## Functional Tests
 
 - `test_simple_message_is_processed`: Ensures a message is consumed and acked.
@@ -9,7 +14,11 @@
 
 ## Local Testing
 
-`cd deployments/local && make start`
+1. Start NATS locally: `cd deployments/local && make start`
+2. Build the tests: `cd functional-tests && make build`
+3. Run the tests: `cd functional-tests && make run`
+
+## Monitoring
 
 Monitoring: https://natsdashboard.com/jetstream?url=http%3A%2F%2Flocalhost%3A8222
 
