@@ -1,8 +1,14 @@
 version: "2.1"
 orbs:
   gradle: circleci/gradle@3.0.0
+jobs:
+  make-gradle-executable:
+    steps:
+      - checkout
+      - run: chmod +x nats-reactor-consumer/gradlew
 workflows:
   checkout-build-test:
     jobs:
+      - make-gradle-executable
       - gradle/test:
           app_src_directory: nats-reactor-consumer
