@@ -7,6 +7,7 @@ from asyncio import sleep
 import nats
 import pytest
 import pytest_asyncio
+from dynaconf import settings
 from nats.js import JetStreamContext
 from nats.js.api import StreamConfig, StorageType
 
@@ -18,7 +19,7 @@ from utils.wait_for import wait_for
 
 @pytest_asyncio.fixture
 async def nats_client():
-    client = await nats.connect()
+    client = await nats.connect(f"nats://{settings.get('NATS_HOST', 'localhost')}:4222")
     yield client, client.jetstream()
     await client.close()
 
@@ -59,7 +60,8 @@ async def setup_nats_stream_dlq(nats_client) -> NatsConsumer:
 
 @pytest.fixture(scope="session")
 def json_server() -> JsonServer:
-    return JsonServer(host="localhost", port=3010)
+    return JsonServer(host=settings.get("JSON_SERVER_HOST", "localhost"),
+                      port=int(settings.get("JSON_SERVER_PORT", 3010)))
 
 
 async def generate_message(js, delays: list = None, error: bool = False) -> tuple:

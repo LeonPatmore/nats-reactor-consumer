@@ -9,6 +9,7 @@ services:
     networks:
       - nats_net
   nats:
+    hostname: nats
     image: nats:latest
     ports:
       - "4222:4222"
@@ -34,6 +35,7 @@ services:
     networks:
       - nats_net
   json_server:
+    hostname: jsonserver
     image: leonpatmore2/json-server:latest
     ports:
       - "3010:3000"

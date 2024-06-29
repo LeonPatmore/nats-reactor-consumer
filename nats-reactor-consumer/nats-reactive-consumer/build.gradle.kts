@@ -1,6 +1,16 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     id("nats.kotlin-library")
 	`java-test-fixtures`
+}
+
+tasks.getByName<BootJar>("bootJar") {
+	enabled = false
+}
+
+tasks.getByName<Jar>("jar") {
+	enabled = true
 }
 
 dependencies {

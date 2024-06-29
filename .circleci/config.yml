@@ -9,7 +9,7 @@ executors:
       architecture: "amd64"
       platform: "linux/amd64"
 jobs:
-  make-gradle-executable:
+  unit-tests:
     executor: machine_executor_amd64
     steps:
       - checkout
@@ -26,4 +26,4 @@ jobs:
 workflows:
   checkout-build-test:
     jobs:
-      - make-gradle-executable
+      - unit-tests

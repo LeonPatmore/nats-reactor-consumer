@@ -28,7 +28,7 @@ class NetsConfiguration {
 
     @Bean
     fun natsConnection(properties: NatsProperties): Connection =
-        Nats.connect("nats://localhost:${properties.port}").also { logger.info { properties } }
+        Nats.connect("nats://${properties.host}:${properties.port}").also { logger.info { properties } }
 
     @Bean
     @ConditionalOnMissingBean
