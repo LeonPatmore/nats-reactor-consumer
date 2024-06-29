@@ -9,6 +9,7 @@ jobs:
     steps:
       - checkout
       - run: chmod +x nats-reactor-consumer/gradlew
+      - setup_remote_docker
       - gradle/with_cache:
           steps:
             - run:
