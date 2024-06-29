@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run: chmod +x nats-reactor-consumer/gradlew
-      - gralde/with_cache:
+      - gradle/with_cache:
           steps:
             - run:
                 command: ./gradlew test
