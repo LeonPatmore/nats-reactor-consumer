@@ -1,15 +1,19 @@
 version: "2.1"
 orbs:
   gradle: circleci/gradle@3.0.0
+executors:
+  machine_executor_amd64:
+    machine:
+      image: ubuntu-2404:2024.05.1
+    environment:
+      architecture: "amd64"
+      platform: "linux/amd64"
 jobs:
   make-gradle-executable:
-    executor:
-      name: gradle/default
-      tag: "21.0"
+    executor: machine_executor_amd64
     steps:
       - checkout
       - run: chmod +x nats-reactor-consumer/gradlew
-      - setup_remote_docker
       - gradle/with_cache:
           steps:
             - run:
