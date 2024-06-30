@@ -1,5 +1,7 @@
 # NATS Reactor Consumer
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/HwrGcGc5xKRejiMpESCWzw/NMXUwBusq8ADX33AevFeDh/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/circleci/HwrGcGc5xKRejiMpESCWzw/NMXUwBusq8ADX33AevFeDh/tree/main)
+
 A reactor library for consuming from NATS.
 
 - [Consumer Client](nats-reactor-consumer/nats-reactive-consumer): A generic consuming client.
