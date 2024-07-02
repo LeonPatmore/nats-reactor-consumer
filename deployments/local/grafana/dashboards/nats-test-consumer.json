@@ -70,7 +70,7 @@
         {
           "datasource": null,
           "editorMode": "code",
-          "expr": "rate(nats_processor_result_total[15m])",
+          "expr": "rate(nats_processor_result_total[1m])",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,

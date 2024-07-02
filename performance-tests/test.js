@@ -7,7 +7,7 @@ const natsConfig = {
 const nats = new Nats(natsConfig);
 
 export default function () {
-  nats.publish("nats.test", "data");
+  nats.publishWithHeaders("nats.test", "data", { id: Date.now().toString(36) });
 }
 
 export const options = {
