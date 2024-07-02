@@ -34,6 +34,10 @@ services:
       - "3000:3000"
     networks:
       - nats_net
+    volumes:
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
   json_server:
     hostname: jsonserver
     image: leonpatmore2/json-server:latest

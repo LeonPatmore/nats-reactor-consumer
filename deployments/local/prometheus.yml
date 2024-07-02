@@ -8,4 +8,5 @@ scrape_configs:
       - targets: ["nats_exporter:7777"]
   - job_name: "test_consumer_metrics"
     static_configs:
-      - targets: ["testconsumer:8080/actuator/prometheus"]
+      - targets: ["nats-test-consumer:8080"]
+    metrics_path: "/actuator/prometheus"
