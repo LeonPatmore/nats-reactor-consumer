@@ -15,7 +15,7 @@ dependencies {
 
 jib {
 	to {
-		image = "nats-test-consumer"
+		image = "nats-test-consumer:latest"
 	}
 	from {
 		image = "amazoncorretto:21"
