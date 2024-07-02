@@ -24,7 +24,8 @@ class NatsProcessor(private val natsSink: NatsSink,
         return natsSink.asFlux()
             .publishOn(Schedulers.parallel())
             .doOnNext { logger.info { "Processing message ${it.metaData()}" } }
-            .flatMap { msg -> messageProcessor.process(msg)
+            .flatMap { msg -> msg.toMono()
+                .flatMap { messageProcessor.process(it) }
                 .flatMap { natsAcker.ack(msg) }
                 .switchIfEmpty(natsAcker.ack(msg))
                 .doOnSuccess { withMetricResult("success") }
@@ -38,12 +39,7 @@ class NatsProcessor(private val natsSink: NatsSink,
     }
 
     private fun withMetricResult(result: String) =
-        meterRegistry.counter(PROCESSOR_METRIC_NAME, PROCESSOR_METRIC_RESULT_TYPE_TAG_NAME, result).increment()
-
-    companion object {
-        private const val PROCESSOR_METRIC_NAME = "nats_processor_result"
-        private const val PROCESSOR_METRIC_RESULT_TYPE_TAG_NAME = "result"
-    }
+        meterRegistry.counter("nats_processor_result", "result", result).increment()
 
 }
 

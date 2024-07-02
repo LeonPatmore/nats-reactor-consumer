@@ -4,3 +4,4 @@ __pycache__
 stderr*.txt
 stdout*.txt
 settings.yaml
+.idea
