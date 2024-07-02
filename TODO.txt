@@ -1,5 +1,6 @@
-- 14/05/2024: Add CI.
+- DONE (01/07/2024) 14/05/2024: Add CI.
 - 14/05/2024: Adding grafana dashboard config to docker compose.
 - 25/05/2024: Add unit tests.
 - 29/06/2024: Fix json server slow stop time.
 - 30/06/2024: Use JIB for building service docker and then copy result into functional test image (or maybe use dind).
+- 02/07/2024: Performance tests.

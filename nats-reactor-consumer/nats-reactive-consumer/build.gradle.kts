@@ -16,6 +16,7 @@ tasks.getByName<Jar>("jar") {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	api("io.nats:jnats:2.17.6")
 	api("io.projectreactor:reactor-core:3.6.5")
