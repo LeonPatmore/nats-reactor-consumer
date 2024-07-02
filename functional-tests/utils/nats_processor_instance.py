@@ -42,7 +42,7 @@ class LocalProcessInstance(ServiceInstance):
         return f"{os.path.join(os.pardir, 'nats-reactor-consumer', 'gradlew')} "\
                f"-p {os.path.join(os.pardir, 'nats-reactor-consumer')} "\
                f"-Dorg.gradle.java.home={JAVA_HOME} "\
-               f"nats-test-processor:bootRun"
+               f"nats-test-consumer:bootRun"
 
     def start(self, log_file_postfix: str = ""):
         logging.info("Starting processor")
