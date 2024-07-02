@@ -24,7 +24,7 @@ class NatsPoller(private val sink: NatsSink,
             .subscribeOn(Schedulers.boundedElastic())
             .flatMapMany { it.toFlux() }
             .doOnNext {
-                logger.info { "Emitting message" }
+                logger.debug { "Emitting message" }
                 sink.tryEmitNext(it)
             }.doOnError {
                 logger.warn(it) { "Failed to emit message" }

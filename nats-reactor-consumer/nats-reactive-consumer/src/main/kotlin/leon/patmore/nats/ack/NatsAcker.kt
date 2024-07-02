@@ -1,6 +1,7 @@
 package leon.patmore.nats.ack
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.micrometer.core.instrument.MeterRegistry
 import io.nats.client.Message
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -11,7 +12,7 @@ fun interface NatsAcker {
 }
 
 @Service
-class SyncNatsAcker : NatsAcker {
+class SyncNatsAcker(private val meterRegistry: MeterRegistry) : NatsAcker {
 
     private val logger = KotlinLogging.logger {}
 
@@ -20,6 +21,8 @@ class SyncNatsAcker : NatsAcker {
             logger.info { "Acking message ${message.metaData()}" }
             message.ackSync(Duration.ofSeconds(1))
         }
+            .doOnSuccess { meterRegistry.counter("nats_acked").increment() }
             .then()
     }
+
 }

@@ -14,6 +14,7 @@ Monitoring: https://natsdashboard.com/jetstream?url=http%3A%2F%2Flocalhost%3A822
 ### Metrics
 
 - `nats_processor_result`: A counter for the result of a processed message. Has tag `result` that can be `failed` or `success`.
+- `nats_acked`: A counter for number of messages acked.
 
 ## Functional Tests
 
