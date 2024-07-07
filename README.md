@@ -20,6 +20,8 @@ Grafana: http://localhost:3000/dashboards
 
 ## Functional Tests
 
+[Here](./functional-tests)
+
 - `test_simple_message_is_processed`: Ensures a message is consumed and acked.
 - `test_message_that_errors_goes_to_dlq`: A message that continuously errors will go to a DLQ.
 - `test_message_that_does_not_ack_in_time_goes_to_dlq`: A message that does not ack in time will eventually go to the DLQ.
@@ -30,6 +32,17 @@ Grafana: http://localhost:3000/dashboards
 1. Start NATS locally: `cd deployments/local && make start`
 2. Build the tests: `cd functional-tests && make build`
 3. Run the tests: `cd functional-tests && make run`
+
+## Performance Tests
+
+[Here](./performance-tests)
+
+The performance test sends requests to the test consumer and ensures that it processes the expected amount after 5 seconds from the test ending.
+
+1. Start NATS locally: `cd deployments/local && make start`
+2. Build the performance test image: `cd performance-tests && make build`
+3. Start the test consumer: `cd nats-reactor-consumer && make docker-run`
+4. Run the test: `cd performance-tests && make run`
 
 ## Documentation
 
