@@ -11,6 +11,8 @@ A reactor library for consuming from NATS.
 
 Monitoring: https://natsdashboard.com/jetstream?url=http%3A%2F%2Flocalhost%3A8222
 
+Grafana: http://localhost:3000/dashboards
+
 ### Metrics
 
 - `nats_processor_result`: A counter for the result of a processed message. Has tag `result` that can be `failed` or `success`.
