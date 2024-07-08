@@ -7,13 +7,13 @@ from asyncio import sleep
 import nats
 import pytest
 import pytest_asyncio
-from dynaconf import settings
 from nats.js import JetStreamContext
 from nats.js.api import StreamConfig, StorageType
 
+from utils.config import settings
 from utils.json_server_helpers import JsonServer
 from utils.nats_consumer import NatsConsumer
-from utils.nats_processor_instance import LocalProcessInstance
+from utils.nats_processor_instance import DockerProcessInstance
 from utils.wait_for import wait_for
 
 
@@ -36,7 +36,7 @@ async def setup_nats_stream(nats_client):
 
 @pytest_asyncio.fixture(scope="session")
 async def start_processor():
-    processor = LocalProcessInstance()
+    processor = DockerProcessInstance()
     processor.start()
     yield processor
     processor.stop()
@@ -76,6 +76,11 @@ async def generate_message(js, delays: list = None, error: bool = False) -> tupl
 
 
 @pytest.mark.asyncio
+async def test_setup_nats_stream(nats_client, setup_nats_stream, json_server: JsonServer):
+    _, js = nats_client
+
+
+@pytest.mark.asyncio
 async def test_simple_message_is_processed(nats_client, setup_nats_stream, start_processor, json_server: JsonServer):
     _, js = nats_client
     my_id, _ = await generate_message(js)
@@ -111,7 +116,7 @@ async def test_message_that_does_not_ack_in_time_goes_to_dlq(nats_client,
 @pytest.mark.asyncio
 async def test_message_when_service_dies_it_is_retried(request, nats_client, setup_nats_stream, json_server: JsonServer):
     _, js = nats_client
-    first_processor = LocalProcessInstance()
+    first_processor = DockerProcessInstance()
     request.addfinalizer(first_processor.stop)
     first_processor.start(log_file_postfix="first")
     await sleep(10) # TODO: We should wait until the service is running via a healthcheck.
@@ -121,7 +126,7 @@ async def test_message_when_service_dies_it_is_retried(request, nats_client, set
     await sleep(3)
     first_processor.stop()
     await sleep(3)
-    second_processor = LocalProcessInstance()
+    second_processor = DockerProcessInstance()
     request.addfinalizer(second_processor.stop)
     second_processor.start(log_file_postfix="second")
 
