@@ -30,8 +30,9 @@ Grafana: http://localhost:3000/dashboards
 ### Local Testing
 
 1. Start NATS locally: `cd deployments/local && make start`
-2. Build the tests: `cd functional-tests && make build`
-3. Run the tests: `cd functional-tests && make run`
+2. Build the test consumer: `cd nats-reactor-consumer && make docker-build`
+3. Build the tests: `cd functional-tests && make build`
+4. Run the tests: `cd functional-tests && make run`
 
 ## Performance Tests
 

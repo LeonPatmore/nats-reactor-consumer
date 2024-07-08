@@ -27,6 +27,7 @@ jobs:
     executor: machine_executor_amd64
     steps:
       - checkout
+      - run: cd nats-reactor-consumer && make docker-build
       - run: cd deployments/local && make start
       - run: cd functional-tests && make build
       - run: cd functional-tests && make run
