@@ -1,5 +1,5 @@
 docker-build:
-	gradlew jibBuildTar
+	./gradlew jibBuildTar
 	docker image load -i nats-test-consumer/build/jib-image.tar
 
 docker-run: docker-build
