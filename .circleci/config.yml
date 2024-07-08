@@ -29,8 +29,8 @@ jobs:
       - checkout
       - run: chmod +x nats-reactor-consumer/gradlew
       - run: cd nats-reactor-consumer && make docker-build
-      - run: cd deployments/local && make start
       - run: cd functional-tests && make build
+      - run: cd deployments/local && make start
       - run: cd functional-tests && make run
 workflows:
   checkout-build-test:

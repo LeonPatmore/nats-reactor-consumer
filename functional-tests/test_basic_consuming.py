@@ -7,10 +7,10 @@ from asyncio import sleep
 import nats
 import pytest
 import pytest_asyncio
-from dynaconf import settings
 from nats.js import JetStreamContext
 from nats.js.api import StreamConfig, StorageType
 
+from utils.config import settings
 from utils.json_server_helpers import JsonServer
 from utils.nats_consumer import NatsConsumer
 from utils.nats_processor_instance import DockerProcessInstance
